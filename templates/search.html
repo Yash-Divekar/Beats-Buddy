@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .bg {
+      background-image: url(https://cdn.wallpapersafari.com/63/32/jE6DBs.jpg);
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar {
+      background-color: #1DB954;
+      padding: 1rem;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar-toggler-icon {
+      background-color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    .navbar-nav .nav-link.active {
+      border-bottom: 2px solid #fff;
+    }
+
+    .container {
+      margin-top: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 40%;
+      height: auto;
+      border-bottom: 1px solid #ccc;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    #dataName {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    #artistName {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    #player-img{
+      display:block;
+      align-self: center;
+      width:80%;
+      height: auto;
+    }
+
+    #player-song{
+      font-size: 5rem;
+      margin-bottom: 5px;
+    }
+
+    #player-artist{
+      font-size: 3rem;
+      margin-bottom: 5px;
+    }
+
+    audio {
+      width: 100%;
+    }
+
+
+    .bi {
+      cursor: pointer;
+      color: #1DB954;
+    }
+
+    .bi:hover {
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Spotify</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Profile</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">ML</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" onsubmit="search(); return false;">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Type
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Song</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Artist</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Album</a></li>
+              </ul>
+            </li>
+          </ul>
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div name='bg'>
+    <div class="row">
+      <div class="col-md-7">
+    <div class="container" id="container">
+      <div class="card-container" id="card-container">
+        <h1>Search for your song</h1>
+        <div class="row" style="display: inline-block; font-size: x-large;" name="control-pannel">
+          <i class="bi bi-skip-backward-fill" name="previous" onclick="previous(counter)"></i>
+          <i class="bi bi-play" name="play" onclick="play(counter)"></i>
+          <i class="bi bi-fast-forward-fill" name="next" onclick="next(counter)"></i>
+          <i class="bi bi-star" name="like"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5" style="border: black ; border-radius: 20px;">
+    <div class="player" id="player_container">
+      <div class='row'>
+        <div class="col-md-4">
+          <i class="bi bi-star" name="like"></i>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-skip-backward-fill" name="previous" onclick="previous(counter)"></i>
+          <i class="bi bi-play" name="play" onclick="play(counter)"></i>
+          <i class="bi bi-fast-forward-fill" name="next" onclick="next(counter)"></i>
+        </div>
+        <div class="col-md-4">
+          <i class="bi bi-star" name="like"></i>
+        </div>   
+      </div>
+    </div>
+  </div>
+    </div>
+  </div>
+  <script>
+    async function search() {
+      let request = document.getElementsByName('name')[0].value;
+      let query=request.replace(" ", "+")
+      console.log("Hi")
+      try {
+        let response = await fetch(`https://saavn.dev/search/songs?query=${query}`);
+        let json_data = await response.json();
+
+        if (json_data['status'] == 'SUCCESS'){
+        let data = json_data['data']['results']
+        player(data);
+        console.log(data)
+      }
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    function song_list(data) {
+      let cardContainer = document.getElementById('card-container');
+      cardContainer.innerHTML = '';
+
+      let counter=0
+
+
+      for (const item of data) {
+        let card = document.createElement('div');
+        card.classList.add('card');
+        
+        let song_name =item['name'];
+        let artists = item['primaryArtists'];
+        var img = item['image'][1]['link']
+        var song_url = item['downloadUrl'][4]['link']
+
+
+        let list_template = `
+                <div class='card-body'>
+                  <div class="row" name='card'>
+                  <div class="col-md-8">
+                      <h1 id="dataName">${song_name}</h1>  
+                      <h3 id="artistName">${artists}</h3>
+                     </div>
+                  <div class="col-md-4">
+                      <img id="img" src='${img}' alt="" style='border-radius: 10px'>
+                  </div>
+                  <div style='margin:15px'>
+                      <audio src="${song_url}" controls></audio>
+                      <div class="row" style="display: inline-block; font-size: x-large;" name="control-pannel">
+                        <i class="bi bi-skip-backward-fill" name="previous" onclick="previous(counter)"></i>
+                        <i class="bi bi-play" name="play" onclick="play(counter)"></i>
+                        <i class="bi bi-fast-forward-fill" name="next" onclick="next(counter)"></i>
+                        <i class="bi bi-star" name="like"></i>
+                      </div>
+                  </div>
+                </div>
+              </div>`;
+
+        card.innerHTML = list_template;
+        cardContainer.appendChild(card);
+      }
+    }
+
+    function player(queue){
+      let player_container = document.getElementById('player_container')
+      player_container.innerHTML=``
+
+      let player=document.createElement('div')
+      
+      let item=queue[0]
+      let song_name = item['name'];
+      let artists = item['primaryArtists'];
+      var img = item['image'][2]['link']
+      var song_link = item['downloadUrl'][4]['link']
+      
+      let player_template=`
+      <div class='card-body' style='display: grid;place-items: center;'>
+          <img id='player-img' src='${img}' style=' height: 300px; width: auto; border-radius: 30px;'>
+          <h1 id="player-song">${song_name}</h1>  
+          <h3 id="player-artist">${artists}</h3>
+          <div style="margin:15px">
+          <audio scr='${song_link}'></audio>
+      </div>
+      </div>
+      `
+
+      player.innerHTML=player_template
+      player_container.appendChild(player)
+      
+      console.log(queue);
+      queue.splice(0,1)
+      song_list(queue);
+    }
+
+
+  </script>
+
+</body>
+
+</html>

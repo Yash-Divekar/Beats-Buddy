@@ -1,0 +1,138 @@
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .bg {
+      background-image: url(https://cdn.wallpapersafari.com/63/32/jE6DBs.jpg);
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar {
+      background-color: #1DB954;
+      padding: 1rem;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .navbar-toggler-icon {
+      background-color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+      color: #fff !important;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    .navbar-nav .nav-link.active {
+      border-bottom: 2px solid #fff;
+    }
+
+    .container {
+      margin-top: 2rem;
+    }
+
+    .card {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 40%;
+      height: auto;
+      border-bottom: 1px solid #ccc;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    #dataName {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    #artistName {
+      color: #888;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+
+    #player-img{
+      display:block;
+      align-self: center;
+      width:80%;
+      height: auto;
+    }
+
+    #player-song{
+      font-size: 5rem;
+      margin-bottom: 5px;
+    }
+
+    #player-artist{
+      font-size: 3rem;
+      margin-bottom: 5px;
+    }
+
+    audio {
+      width: 100%;
+    }
+
+
+    .bi {
+      cursor: pointer;
+      color: #1DB954;
+    }
+
+    .bi:hover {
+      color: black;
+    }
+
+    .progress {
+      height: 8px; /* Reduced height for a sleeker look */
+      background-color: #000; /* Background color of the progress bar container */
+      border-radius: 5px; /* Rounded corners */
+      overflow: hidden;
+      margin-top: 10px;
+      width: 80%; /* Adjust as needed */
+    }
+    
+    .progress-bar {
+      background: linear-gradient(to right, #1DB954, #1DB954); /* Gradient background */
+      height: 100%;
+      width: 0;
+      transition: width 0.1s linear;
+      border-radius: 5px; /* Rounded corners */
+    }
+
+
+#infoCard {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  display: none;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}

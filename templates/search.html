@@ -16,11 +16,12 @@
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
 
 </head>
 
-<body>
+<body style="font-family: 'Libre Baskerville';">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px;">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Beats Buddy</a>
@@ -69,6 +70,10 @@
 
   <div name='bg'>
     <div class="row">
+      <div class="col-md-5" style="display: block; align-self: flex-start;">
+        <div class="player position-relative" id="player_container"> <!-- Add 'position-relative' class -->
+        </div>
+      </div>
       <div class="col-md-7">
     <div class="container" id="container">
       <div class="card-container" id="card-container">
@@ -76,10 +81,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-5" style="border: black ; border-radius: 20px; font-size: xx-large;">
-    <div class="player position-relative" id="player_container"> <!-- Add 'position-relative' class -->
-    </div>
-  </div>
+  
     </div>
     </div>
 

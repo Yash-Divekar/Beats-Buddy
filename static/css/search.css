@@ -1,10 +1,9 @@
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: 'Libre Baskerville';
     }
 
     .bg {
-      background-image: url(https://cdn.wallpapersafari.com/63/32/jE6DBs.jpg);
       background-size: cover;
       height: 100vh;
       display: flex;
@@ -15,6 +14,34 @@
     .navbar {
       background-color: #1DB954;
       padding: 1rem;
+      position: fixed; /* or 'absolute' based on your layout */
+      top: 0;
+      width: 100%;
+      z-index: 1000; /* ensure it's above other content */
+    }
+    @media (max-width: 991.98px) {
+      /* Adjust the z-index for the mobile navbar */
+      .navbar-collapse {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 999; /* ensure it's above other content */
+        background-color: rgba(0, 0, 0, 0.9); /* semi-transparent background */
+        padding: 1rem;
+        overflow-y: auto; /* allow scrolling for menu items */
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+      }
+    
+      .navbar-collapse.show {
+        transform: translateX(0);
+      }
+    
+      .navbar-toggler {
+        z-index: 1001; /* ensure it's above other content */
+      }
     }
 
     .navbar-brand {
@@ -22,18 +49,13 @@
       font-weight: bold;
     }
 
-    .navbar-toggler-icon {
-      background-color: #fff;
-    }
 
     .navbar-nav .nav-link {
-      color: #fff !important;
       margin-right: 15px;
       font-weight: bold;
     }
 
     .navbar-nav .nav-link.active {
-      border-bottom: 2px solid #fff;
     }
 
     .container {
@@ -83,12 +105,17 @@
       height: auto;
     }
 
-    #player-song{
-      font-size: 5rem;
+    #player-song {
+      font-size: 3rem;
       margin-bottom: 5px;
+      white-space: nowrap; /* Prevent text wrapping */
+      overflow: hidden; /* Hide overflowing text */
+      text-overflow: ellipsis; /* Display ellipsis (...) for overflow */
+      max-width: 100%; /* Limit width to container width */
     }
 
     #player-artist{
+      color: #888;
       font-size: 3rem;
       margin-bottom: 5px;
     }

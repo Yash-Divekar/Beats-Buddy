@@ -18,13 +18,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 
-
 </head>
 
-<body style="font-family: 'Libre Baskerville';">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 80px;">
+<body style="font-family: 'Libre Baskerville'">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="height: 100px; font-size: x-large;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Beats Buddy</a>
+      <a class="navbar-brand" href="" style="font-size: xx-large;">Beats Buddy</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -35,7 +34,7 @@
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
+            <a class="nav-link active" href="/logout">Profile</a>
           </li>
 
           <li class="nav-item">
@@ -62,16 +61,17 @@
             </li>
           </ul>
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-success bi bi-search" type="submit" style="width: 70px;"></button>
         </form>
       </div>
     </div>
   </nav>
-
-  <div name='bg'>
+{% block content %}
+  <div class='bg'>
     <div class="row">
       <div class="col-md-5" style="display: block; align-self: flex-start;">
-        <div class="player position-relative" id="player_container"> <!-- Add 'position-relative' class -->
+        <div class="player position-relative" id="player_container"> 
+          
         </div>
       </div>
       <div class="col-md-7">
@@ -84,7 +84,7 @@
   
     </div>
     </div>
-
+{% endblock %}
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 console.log("hi");
 let data=[];
 let song={};
+
 document.addEventListener("DOMContentLoaded", function () {
   // Your code here
   document
@@ -24,8 +25,7 @@ async function global_search() {
       data = json_data["data"]["results"];
       song = data[0];
 
-      player(data[0]);
-      Content_list(data.slice(1, -1));
+      Content_list(data);
 
       console.log("Data fetched");
     }
@@ -45,7 +45,7 @@ async function player(data) {
   let player_template = ``;
   if (data.type == "song") {
     player_template = `
-      <div class='card-body' style='display: grid; place-items: center; margin-top:1em'>
+      <div class='card-body' style='display: grid; place-items: center; margin: 40px'>
         <i class="bi bi-info-circle-fill position-absolute top-0 end-0 mt-2 me-2" id="infoButton" onclick="toggleInfoCard()"></i>
         <div id="infoCard" style="font-size:small ;width:200px">
             ID : ${data["id"]}<br>
@@ -71,7 +71,8 @@ async function player(data) {
                 <i class="bi bi-skip-forward" onclick="audio_forward()"></i>
             </div>
             <div>
-                <i class="bi bi-star" id="like"></i>
+                <i class="bi bi-star" id="likeButton" onclick='like()'></i>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
             </div>
         </div>
       </div>
@@ -83,6 +84,7 @@ async function player(data) {
 }
 
 async function Content_list(data) {
+  console.log(data);
   let cardContainer = document.getElementById("card-container");
   cardContainer.innerHTML = "";
   
@@ -154,13 +156,65 @@ async function update_player(counter) {
   if (counter >= 0 && counter < data.length) {
     
       let choice = data[counter];
+      
+      console.log(data);
 
       data.splice(counter, 1);
-      data.push(song);
+
+      if (!(song in data)){
+        data.push(song);
+      }
 
       await player(choice);
       await Content_list(data);
   } else {
       console.error("Invalid counter value. Counter should be within the bounds of the data array.");
   }
+}
+
+function like(){
+  var Data = {
+    'song_id':song['id'],
+    'name' : song['name'],
+    'artist' : song["artists"]["primary"][0]["name"],
+    'img' : song["image"][2]["url"],
+    'link' :song["downloadUrl"][4]["url"]
+  };
+  console.log(Data);
+  
+  const likeButton = document.getElementById('likeButton')
+
+  // Send the song ID to the Django backend
+  fetch('/like', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+      },
+      body: JSON.stringify({ 'data' : Data })
+  })
+  .then(response => {
+      if (response.ok) {
+          likeButton.classList.remove('bi-star');
+          likeButton.classList.add('bi-star-fill');
+          console.log('Song liked successfully!');
+      } else {
+          
+          console.error('Failed to like the song');
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+function getCsrfToken() {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const [key, value] = cookies[i].trim().split('=');
+    if (key === 'csrftoken') {
+      return value;
+    }
+  }
+  return null;
 }

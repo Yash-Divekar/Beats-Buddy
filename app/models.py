@@ -1,56 +1,60 @@
 from django.db import models
 from django_countries.fields import CountryField
+from django.contrib.auth.models import User
 
-genders = (("Male" , 'Male') , ("Female" , "Female") , ("Null" , "Prefer Not to Say"))
+GENDERS = (
+    ("Male", 'Male'),
+    ("Female", "Female"),
+    ("Null", "Prefer Not to Say")
+)
 
-class user_data(models.Model):
-    name = models.CharField(max_length=50 , unique=True )
-    email = models.EmailField()
-    gender = models.CharField(choices=genders , default="Null" ,max_length=200)
-    dob = models.DateField()
+class UserData(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True )
+    name = models.CharField(max_length=50, unique=True)
+    gender = models.CharField(choices=GENDERS, default="Null", max_length=200)
+    age = models.IntegerField()
     nationality = CountryField()
     
     def __str__(self):
-        return f'{self.name}'
-    
-    class Meta:
-        app_label = 'app'
-    
-class liked_songs(models.Model):
-    user = models.ForeignKey(user_data, on_delete=models.CASCADE, related_name='liked_user')
-    song_id = models.CharField(unique=True , max_length=200)
+        return self.name
+
+class LikedSongs(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked_songs')
+    song_id = models.CharField( max_length=200)
     name = models.CharField(max_length=200)
     artist = models.CharField(max_length=200)
     img = models.URLField()
     link = models.URLField()
     
     def __str__(self):
-        return  f'{self.name}'
-    
-    class Meta:
-        app_label = 'app'
-    
-    
-class playlist(models.Model):
-    user = models.ForeignKey(user_data, on_delete=models.CASCADE, related_name='playlist_user')
+        return f'{self.name}'
+
+class Playlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
     name = models.CharField(max_length=200)
     
     def __str__(self):
         return f'{self.name}'
-    
-    class Meta:
-        app_label = 'app'
-    
-class playlist_songs(models.Model):
-    playlist = models.ForeignKey(playlist, on_delete=models.CASCADE, related_name='playlist')
-    song_id = models.CharField(unique=True , max_length=200)
+
+class PlaylistSongs(models.Model):
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='songs')
+    song_id = models.CharField(max_length=200)
     name = models.CharField(max_length=200)
     artist = models.CharField(max_length=200)
     img = models.URLField()
     link = models.URLField()
     
     def __str__(self):
-        return  f'{self.name}'
+        return f'{self.name}'
+
+
+class recent_played(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lrecent_played')
+    song_id = models.CharField( max_length=200)
+    name = models.CharField(max_length=200)
+    artist = models.CharField(max_length=200)
+    img = models.URLField()
+    link = models.URLField()
     
-    class Meta:
-        app_label = 'app'
+    def __str__(self):
+        return f'{self.name}'

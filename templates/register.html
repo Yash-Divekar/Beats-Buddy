@@ -1,0 +1,74 @@
+{% extends "search.html" %}
+
+{% block content %}
+<div style="display: grid; place-content: center; height: auto;">
+    <form method="post" action="/register" id="register-form" class="register-form" style="width: 700px; margin-left: auto; margin-right: auto; background-color: rgb(10, 202, 138);padding: 30px; border-radius: 30px; margin: 40px 40px;">
+      {% csrf_token %}
+      <p style="font-size: xxx-large; text-align: center;">Welcome</p>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_username" style="font-size: x-large;">Username</label>
+          </div>
+          <div class="col-md-8">
+            {{user_form.username}}
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_name" style="font-size: x-large;">Display Name</label>
+          </div>
+          <div class="col-md-8">
+            {{user_data_form.name}}
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_password" style="font-size: x-large;">Password</label>
+          </div>
+          <div class="col-md-4">
+            {{user_form.password}}
+          </div>
+          <div class="col-md-4">
+            <input type="password" id="pdw" name="pwd" class="form-control" placeholder="Confirm Password">
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_email" style="font-size: x-large;">Email</label>
+          </div>
+          <div class="col-md-8">
+            {{user_form.email}}
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_gender" style="font-size: x-large;">Gender</label>
+          </div>
+          <div class="col-md-8">
+            {{user_data_form.gender}}
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_age" style="font-size: x-large;">Age</label>
+          </div>
+          <div class="col-md-8">
+            {{user_data_form.age}}
+          </div>
+        </div>
+        <div class="row m-3">
+          <div class="col-md-4">
+            <label for="id_nationality" style="font-size: x-large;">Nationality</label>
+          </div>
+          <div class="col-md-8">
+            {{user_data_form.nationality}}
+          </div>
+        </div>
+        <div style="display: block;align-items: center;">
+          <button type="submit" class="btn btn-dark" style="font-size: x-large;">Register</button>
+          <span>Already have an account? <a href="login">Sign In</a></span>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

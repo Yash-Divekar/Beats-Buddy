@@ -1,10 +1,8 @@
     .bg {
-      background-color: #CE5A67;
+      background-color:beige;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
       height: 800px;
+      
     }
 
     .navbar {

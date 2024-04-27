@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search</title>
+
+  <script src='{% static "js/search.js" %}'></script>
+  <link rel="stylesheet" href='{% static "css/search.css" %}'>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body style="font-family: 'Libre Baskerville'; background-color: #212325; color: #EEEEEE;">
+  <nav style="background-color:#212325; padding: 20px; width: 100%;">
+    <div style="display: flex; justify-content: space-between;">
+      <div style="font-size: 50px;color: #38dbe3;" >Beats Buddy</div>
+      <div style="display:grid ;place-items: center;">
+        <form action="">
+          <input type="search" style="width: 700px; border-radius: 100px; height:40px; font-size: 25px; padding : 0px 20px 0px 20px;" class="form-control" placeholder="Search for your songs">
+        </form>
+      </div>
+      <div style="margin-left: 50px; padding-right: 20px;"><a href=""><img src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png" alt="" style="aspect-ratio: 1; height: 70px; "></a></div>
+    </div>
+  </nav>
+
+  <div style="display: grid; grid-template-columns: 600px 870px ;gap: 30px;padding: 20px; padding-top: 10px;">
+
+    <div class="player" style="background-color:#31363F; border-radius: 50px; padding: 30px;">
+      <div style="display:flex; font-size: 60px; justify-content: space-around; align-items: center;">
+        <i class="bi bi-skip-start-fill"></i>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 300px; border-radius: 40px;">
+        <i class="bi bi-skip-end-fill"></i>
+      </div>
+    <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
+    <div>
+      <div id="song_name" style="font-size: 60px;">Shape of You</div>
+    </div>
+    <div>
+      <i class="bi bi-star" id="likeButton" onclick='like()' style="font-size: xx-large;"></i>
+      <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+    </div>
+  </div>
+  <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
+    <div>
+      <div id="song_aritist" style="font-size: 30px;">Ed Sheeran</div>
+    </div>
+    <div>
+      <div id="sing_time">12:47</div>
+    </div>
+  </div>
+      <audio id="audio" src="https://aac.saavncdn.com/126/da7cde34b008294e181842062530546d_320.mp4"></audio>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="music-controls"
+            style="margin: 15px; display: flex; justify-content:space-around; width:100%;font-size: xx-large;">
+            <div>
+                <i class="bi bi-download" name="download"></i>
+            </div>
+            <div style="display:flex; justify-content:space-between; width:20%">
+                <i class="bi bi-skip-backward" onclick="audio_backward()"></i>
+                <i class="bi bi-play" id="playPause" onclick="playPause()"></i>
+                <i class="bi bi-skip-forward" onclick="audio_forward()"></i>
+            </div>
+            <div>
+                <i class="bi bi-plus-square" id="likeButton" onclick='like()'></i>
+                <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+            </div>
+        </div>
+    </div>
+
+    <div class="content" style="background-color:#31363F; border-radius: 50px; padding: 30px;">
+      <div style="display: grid; grid-template-columns: 380px 380px; gap: 30px ;">
+      
+        <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+          <div>
+            <div id="name" style="font-size: 30px;">Recent Played</div>
+            <div id="disc" style="font-size: 20px;">Recent Played</div>
+          </div>
+          <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+        </div>
+
+      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div>
+          <div id="name" style="font-size: 30px;">Recent Played</div>
+          <div id="disc" style="font-size: 20px;">Recent Played</div>
+        </div>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+      </div>
+
+      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div>
+          <div id="name" style="font-size: 30px;">Recent Played</div>
+          <div id="disc" style="font-size: 20px;">Recent Played</div>
+        </div>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+      </div>
+      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div>
+          <div id="name" style="font-size: 30px;">Recent Played</div>
+          <div id="disc" style="font-size: 20px;">Recent Played</div>
+        </div>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+      </div>
+      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div>
+          <div id="name" style="font-size: 30px;">Recent Played</div>
+          <div id="disc" style="font-size: 20px;">Recent Played</div>
+        </div>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+      </div>
+      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div>
+          <div id="name" style="font-size: 30px;">Recent Played</div>
+          <div id="disc" style="font-size: 20px;">Recent Played</div>
+        </div>
+        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+      </div>
+    </div>
+<!---
+    <div style="display: grid; grid-template-columns: 300px 300px 300px; gap: 5px; padding-top: 20px;">
+      <div style="aspect-ratio: 1; height: 170px; background-color: aliceblue; border-radius: 30px; display: grid; place-items: center; color: #212325;">Arjit Singh</div>
+      <div style="aspect-ratio: 1; height: 170px; background-color: aliceblue; border-radius: 30px; display: grid; place-items: center; color: #212325;">Arjit Singh</div>
+      <div style="aspect-ratio: 1; height: 170px; background-color: aliceblue; border-radius: 30px; display: grid; place-items: center; color: #212325;">Arjit Singh</div>
+      <div style="aspect-ratio: 1; height: 170px; background-color: aliceblue; border-radius: 30px; display: grid; place-items: center; color: #212325;">Arjit Singh</div>
+      <div style="aspect-ratio: 1; height: 170px; background-color: aliceblue; border-radius: 30px; display: grid; place-items: center; color: #212325;">Arjit Singh</div>
+    
+    </div>
+    -->
+    </div>
+  </div>
+</body>
+
+</html>

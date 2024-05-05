@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,9 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Search</title>
+  <script>
+    const user_data={{ data | safe }};
+  </script>
 
   <script src='{% static "js/search.js" %}'></script>
-  <link rel="stylesheet" href='{% static "css/search.css" %}'>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -17,45 +19,142 @@
     crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-
+  
 </head>
 
 <body style="font-family: 'Libre Baskerville'; background-color: #212325; color: #EEEEEE;">
   <nav style="background-color:#212325; padding: 20px; width: 100%;">
     <div style="display: flex; justify-content: space-between;">
-      <div style="font-size: 50px;color: #38dbe3;" >Beats Buddy</div>
+      
+      <a href="/" ><h1 style="font-size: 50px;color: #38dbe3;">Beats Buddy</h1></a>
+      
       <div style="display:grid ;place-items: center;">
-        <form action="">
-          <input type="search" style="width: 700px; border-radius: 100px; height:40px; font-size: 25px; padding : 0px 20px 0px 20px;" class="form-control" placeholder="Search for your songs">
+        <form onsubmit="handleFormSubmit(event)">
+          <input id="search" type="search" style="width: 700px; border-radius: 100px; height:40px; font-size: 25px; padding : 0px 20px 0px 20px;" class="form-control" placeholder="Search for your songs">
         </form>
       </div>
-      <div style="margin-left: 50px; padding-right: 20px;"><a href=""><img src="https://www.pngall.com/wp-content/uploads/5/Profile-Avatar-PNG.png" alt="" style="aspect-ratio: 1; height: 70px; "></a></div>
-    </div>
+      <!--<div style="margin-left: 50px; padding-right: 20px;"><a href="/logout"><i class="bi bi-person-circle"  style="aspect-ratio: 1; height: 70px; font-size: 60px; "></i></a></div>
+      -->
+        <i class="bi bi-person-circle"  style="aspect-ratio: 1; height: 70px; font-size: 60px; "  data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i>
+      </div>
+      <div class="collapse" id="collapseExample" style="z-index: 2; width: 400px; position:fixed; color: #212325 ;right: 70px;">
+        <div class="card card-body">
+            <p>Name : {{data.user}}</p>
+            <a href="/logout"><button class="btn btn-danger">Log Out</button></a>
+        </div>
+      </div>
   </nav>
 
-  <div style="display: grid; grid-template-columns: 600px 870px ;gap: 30px;padding: 20px; padding-top: 10px;">
+  <div id="main">
+    <div id="Popup" class="Popup" style="display: none; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 3; backdrop-filter: blur(10px);position: fixed;top: 0;left: 0; place-content: center;">
+      <div id="popup-card" style="display: flex; place-content: center ;align-items: center; height: 500px; width: 800px; border-radius: 20px;background-color:#31363F;">
+        <div style="height: 95%; width: 97%; border: 5px solid rgba(33, 35, 37, 0.5); border-radius: 15px;">
+          <button id="closeButtonInner" onclick="closepopup()" style="background: none; border: none; font-size: 24px; color: #EEEEEE; cursor: pointer;position:absolute;" >&times;</button>
+        <div style="display: flex; justify-content: space-between; padding: 1px 20px;align-items: center;">
+        <div id="header" style="color: #38dbe3; font-size: 60px;">
+          Playlist
+        </div>
+         
+        <div>
+          <button class="btn btn-secondary" style="width: 150px; height: 50px; font-size: 30px; display: flex; justify-content: center;align-items: center; "><i class="bi bi-plus-square" style="margin: 10px;"></i>Add</button>
+        </div>
+      </div>
+        <hr>
+        <div id='popup-card1' style="padding:5px 15px;display: grid; grid-template-columns: 49% 49%; gap: 14px ; overflow: auto; max-height: 330px;">
+      
+          <script>
+            console.log(user_data.playlist)
+          </script>
 
+{% for index, item in data.playlist %}
+<div class="playlist" onclick="addtoPlaylist({{ index }}, '{{ item.name }}')" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; justify-content: space-between;">
+    <div>
+        <div class="name" style="font-size: 30px;">{{ item.name }}</div>
+        <div class="disc" style="font-size: 20px;">{{ item.songs|length }} songs in this playlist</div>
+    </div>
+    <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+</div>
+{% endfor %}
+      
+      
+      </div>
+      </div>
+      </div>
+    </div>
+  
+  <div style="display: grid; grid-template-columns: 600px 870px ;gap: 30px;padding: 20px; padding-top: 10px;">
+    
+    {% if data.recent %}
     <div class="player" style="background-color:#31363F; border-radius: 50px; padding: 30px;">
-      <div style="display:flex; font-size: 60px; justify-content: space-around; align-items: center;">
+        <div style="display:flex; font-size: 60px; justify-content: space-around; align-items: center;">
+            <i class="bi bi-skip-start-fill"></i>
+            <img id="song_img" src="{{ data.recent.0.img }}" alt="" style="aspect-ratio: 1; height: 300px; border-radius: 40px;">
+            <i class="bi bi-skip-end-fill"></i>
+        </div>
+        <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
+            <div>
+                <div id="song_name" style="font-size: 50px; max-width: 400px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ data.recent.0.name }}</div>
+            </div>
+            <div>
+                <i class="bi bi-star" id="likeButton" onclick='like()' style="font-size: xx-large;"></i>
+                <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}'>
+            </div>
+        </div>
+        <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
+            <div>
+                <div id="song_artist" style="font-size: 30px; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ data.recent.0.artist }}</div>
+            </div>
+            <div>
+                <div id="song_time">{{ data.recent.0.duration }}</div>
+            </div>
+        </div>
+        <audio id="audio" src="{{ data.recent.0.link }}"></audio>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="music-controls" style="margin: 15px; display: flex; justify-content:space-around; width:100%;font-size: xx-large;">
+            <div>
+                <i class="bi bi-download" name="download"></i>
+            </div>
+            <div style="display:flex; justify-content:space-between; width:20%">
+                <i class="bi bi-skip-backward" onclick="audio_backward()"></i>
+                <i class="bi bi-play" id="playPause" onclick="playPause()"></i>
+                <i class="bi bi-skip-forward" onclick="audio_forward()"></i>
+            </div>
+            <div>
+                <i class="bi bi-plus-square" id="add_to_playlist" onclick="openpopup()"></i>
+                <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}'>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="player" style="background-color:#31363F; border-radius: 50px; padding: 30px;">
+      <div style="display:flex; font-size: 60px; justify-content: space-around; align-items: center; padding-top: 15x;">
         <i class="bi bi-skip-start-fill"></i>
-        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 300px; border-radius: 40px;">
+        <img id="song_img" src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 300px; border-radius: 40px;">
         <i class="bi bi-skip-end-fill"></i>
       </div>
     <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
     <div>
-      <div id="song_name" style="font-size: 60px;">Shape of You</div>
+      <div id="song_name" style="font-size: 50px; max-width: 400px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; padding-top: 10px;">Shape of You</div>
     </div>
     <div>
       <i class="bi bi-star" id="likeButton" onclick='like()' style="font-size: xx-large;"></i>
-      <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+      <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}'>
     </div>
   </div>
   <div style="display: flex ; width: 95%; align-items: center; justify-content: space-between;">
     <div>
-      <div id="song_aritist" style="font-size: 30px;">Ed Sheeran</div>
+      <div id="song_artist" style="font-size: 30px; max-width: 200px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;">Ed Sheeran</div>
     </div>
     <div>
-      <div id="sing_time">12:47</div>
+      <div id="song_time">3:53</div>
     </div>
   </div>
       <audio id="audio" src="https://aac.saavncdn.com/126/da7cde34b008294e181842062530546d_320.mp4"></audio>
@@ -73,59 +172,41 @@
                 <i class="bi bi-skip-forward" onclick="audio_forward()"></i>
             </div>
             <div>
-                <i class="bi bi-plus-square" id="likeButton" onclick='like()'></i>
-                <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
+                <i class="bi bi-plus-square" id="add_to_playlist" onclick='openpopup()'></i>
+                <input type="hidden" name="csrfmiddlewaretoken" value='{% csrf_token %}''>
             </div>
         </div>
     </div>
+    {% endif %}
 
-    <div class="content" style="background-color:#31363F; border-radius: 50px; padding: 30px;">
-      <div style="display: grid; grid-template-columns: 380px 380px; gap: 30px ;">
+    <div id="content" style="background-color:#31363F; border-radius: 50px; padding: 30px; overflow: auto; max-height: 600px;">
+      <div id='card' style="display: grid; grid-template-columns: 390px 390px; gap: 30px ;">
       
-        <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+        <div id='recent' class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
           <div>
             <div id="name" style="font-size: 30px;">Recent Played</div>
-            <div id="disc" style="font-size: 20px;">Recent Played</div>
+            <div id="disc" style="font-size: 20px;">Restart the musical Journey</div>
           </div>
           <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
         </div>
 
-      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
+      <div id="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
         <div>
-          <div id="name" style="font-size: 30px;">Recent Played</div>
-          <div id="disc" style="font-size: 20px;">Recent Played</div>
+          <div id="name" style="font-size: 30px;">Liked Songs</div>
+          <div id="disc" style="font-size: 20px;">Listen to your Favorite</div>
         </div>
         <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
       </div>
-
-      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
-        <div>
-          <div id="name" style="font-size: 30px;">Recent Played</div>
-          <div id="disc" style="font-size: 20px;">Recent Played</div>
-        </div>
-        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
-      </div>
-      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
-        <div>
-          <div id="name" style="font-size: 30px;">Recent Played</div>
-          <div id="disc" style="font-size: 20px;">Recent Played</div>
-        </div>
-        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
-      </div>
-      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
-        <div>
-          <div id="name" style="font-size: 30px;">Recent Played</div>
-          <div id="disc" style="font-size: 20px;">Recent Played</div>
-        </div>
-        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
-      </div>
-      <div class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between;">
-        <div>
-          <div id="name" style="font-size: 30px;">Recent Played</div>
-          <div id="disc" style="font-size: 20px;">Recent Played</div>
-        </div>
-        <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
-      </div>
+      
+      {% for index, item in data.playlist %}
+<div class="playlist" onclick="" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; justify-content: space-between;">
+    <div>
+        <div class="name" style="font-size: 30px;">{{ item.name }}</div>
+        <div class="disc" style="font-size: 20px;">{{ item.songs|length }} songs in this playlist</div>
+    </div>
+    <img src="https://c.saavncdn.com/126/Shape-of-You-English-2017-500x500.jpg" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
+</div>
+{% endfor %}
     </div>
 <!---
     <div style="display: grid; grid-template-columns: 300px 300px 300px; gap: 5px; padding-top: 20px;">
@@ -139,6 +220,7 @@
     -->
     </div>
   </div>
+</div>
 </body>
 
 </html>

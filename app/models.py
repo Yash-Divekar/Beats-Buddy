@@ -25,6 +25,8 @@ class LikedSongs(models.Model):
     artist = models.CharField(max_length=200)
     img = models.URLField()
     link = models.URLField()
+    duration = models.TextField()
+    time = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'{self.name}'
@@ -43,18 +45,21 @@ class PlaylistSongs(models.Model):
     artist = models.CharField(max_length=200)
     img = models.URLField()
     link = models.URLField()
+    duration = models.TextField()
     
     def __str__(self):
         return f'{self.name}'
 
 
-class recent_played(models.Model):
+class Recent_played(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='lrecent_played')
     song_id = models.CharField( max_length=200)
     name = models.CharField(max_length=200)
     artist = models.CharField(max_length=200)
     img = models.URLField()
     link = models.URLField()
+    duration = models.TextField()
+    time = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f'{self.name}'

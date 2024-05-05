@@ -1,19 +1,18 @@
-console.log("hi");
-let data=[];
-let song={};
+let song = user_data.recent[0]
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Your code here
-  document
-    .getElementById("searchForm")
-    .addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevents the default form submission behavior
-      global_search(); // Calls the global_search() function
-    });
-});
+// Now you can use the song object in your JavaScript code
+console.log('Current song:', song);
+let content=[];
+let duration='';
+
+
+function handleFormSubmit(event) {
+  event.preventDefault(); // Prevent the form from actually submitting
+  global_search(); // Call the search function
+}
 
 async function global_search() {
-  let request = document.getElementsByName("name")[0].value;
+  let request = document.getElementById("search").value;
 
   try {
     let response = await fetch(
@@ -22,11 +21,10 @@ async function global_search() {
     let json_data = await response.json();
 
     if (json_data["success"] == true) {
-      data = json_data["data"]["results"];
-      song = data[0];
-
-      Content_list(data);
-
+      content = json_data["data"]["results"];
+      song = content[0];
+      console.log("hi")
+      Content_list(content);
       console.log("Data fetched");
     }
   } catch (error) {
@@ -34,90 +32,94 @@ async function global_search() {
   }
 }
 
+function player(data) {
 
+  let song_name = document.getElementById("song_name");
+  let song_artist = document.getElementById("song_artist");
+  let song_time = document.getElementById("song_time");
+  let song_audio = document.getElementById("audio");
+  let song_img = document.getElementById("song_img");
+  let play = document.getElementById("playPause");
+  let progress = document.getElementById("progressBar")
 
-async function player(data) {
-  let player_container = document.getElementById("player_container");
-  player_container.innerHTML = ``;
-  song = data;
+  song_name.innerText=data['name'];
+  song_artist.innerText=data['artists']['primary'][0]['name'];
+  song_img.src = data['image'][2]['url'];
 
-  let player = document.createElement("div");
-  let player_template = ``;
-  if (data.type == "song") {
-    player_template = `
-      <div class='card-body' style='display: grid; place-items: center; margin: 40px'>
-        <i class="bi bi-info-circle-fill position-absolute top-0 end-0 mt-2 me-2" id="infoButton" onclick="toggleInfoCard()"></i>
-        <div id="infoCard" style="font-size:small ;width:200px">
-            ID : ${data["id"]}<br>
-            Album : ${data["album"]["name"]}<br>
-            Copyright : ${data["copyright"]}<br>
-        </div>
-
-        <img id='player-img' src='${data["image"][2]["url"]}' style='height: 300px; width: auto; border-radius: 30px;'>
-        <h4 id="player-song">${data["name"]}</h4>
-        <h6 id="player-artist">${data["artists"]["primary"][0]["name"]}</h6>
-        <audio id="audio" src="${data["downloadUrl"][4]["url"]}"></audio>
-        <div class="progress">
-            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <div class="music-controls"
-            style="margin: 15px; display: flex; justify-content:space-around; width:100%;font-size: xx-large;">
-            <div>
-                <i class="bi bi-download" name="download"></i>
-            </div>
-            <div style="display:flex; justify-content:space-between; width:20%">
-                <i class="bi bi-skip-backward" onclick="audio_backward()"></i>
-                <i class="bi bi-play" id="playPause" onclick="playPause()"></i>
-                <i class="bi bi-skip-forward" onclick="audio_forward()"></i>
-            </div>
-            <div>
-                <i class="bi bi-star" id="likeButton" onclick='like()'></i>
-                <input type="hidden" name="csrfmiddlewaretoken" value="{% csrf_token %}">
-            </div>
-        </div>
-      </div>
-  `;
+  song_audio.src = data["downloadUrl"][4]["url"];
+  
+  play.classList='bi-play';
+  progressBar.style.width = 0+"%";
+  let final_duration;
+  
+  audio.onloadedmetadata = function() {
+    const duration = audio.duration;
+    const minutes = Math.floor(duration / 60);
+    const seconds = Math.floor(duration % 60);
+    const formattedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    let final_duration = `${minutes}:${formattedSeconds}`;
+    song_time.textContent = final_duration;
+    console.log(final_duration);
+    
+    song['duration'] = `${final_duration}`
+  };
+  song = {
+    'song_id':data['id'],
+    'name' : data['name'],
+    'artist' : data["artists"]["primary"][0]["name"],
+    'img' : data["image"][2]["url"],
+    'link' :data["downloadUrl"][4]["url"],
+    'duration' : final_duration,
   }
-
-  player.innerHTML = player_template;
-  player_container.appendChild(player);
+  ;
+  recent();
 }
 
-async function Content_list(data) {
-  console.log(data);
-  let cardContainer = document.getElementById("card-container");
+function Content_list(data) {
+  let cardContainer = document.getElementById("card");
   cardContainer.innerHTML = "";
   
   counter = 0
   for (const item of data) {
     let card = document.createElement("div");
-    card.classList.add(`card`);
     
     let list_template = `
-                <div class='card-body' id="list" onclick="update_player(${counter})">
-                <div class="row" name='card'>
-                  <div class="col-md-8">
-                    <h1 id="dataName">${item["name"]}</h1>  
-                    <h3 id="artistName">${item["artists"]["primary"][0]["name"]}</h3>
-                    <div id="song-id" hidden>${item['id']}</div>
+                <div onclick="update_player(${counter})" class="liked" style="height: 100px; background-color: #76ABAE; border-radius: 20px; display: flex;padding: 20px; align-items: center; display: flex; justify-content: space-between">
+                  <div>
+                    <div id="name" style="font-size: 30px; max-width: 200px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;">${item["name"]}</div>
+                    <div id="disc" style="font-size: 20px;max-width: 200px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;">${item["artists"]["primary"][0]["name"]}</div>
                   </div>
-                  <div class="col-md-4">
-                    <img id="img" src='${item["image"][2]["url"]}' alt="" style='border-radius: 10px'>
-                  </div>
+                  <img src="${item["image"][2]["url"]}" alt="" style="aspect-ratio: 1; height: 70px; border-radius: 15px;">
                 </div>
-              </div>`;
+                `;
 
     card.innerHTML = list_template;
     cardContainer.appendChild(card);
     counter++;
   }
+
 }
 
 function playPause() {
   const audio = document.getElementById("audio");
   const playPauseButton = document.getElementById("playPause");
   const progressBar = document.getElementById("progressBar");
+  const likeButton = document.getElementById('likeButton')
 
+  if (song in user_data['liked']){
+    likeButton.classList.remove('bi-star');
+    likeButton.classList.add('bi-star-fill');
+  }
+  else{
+    likeButton.classList.remove('bi-star-fill');
+    likeButton.classList.add('bi-star');
+  }
   if (audio.paused) {
     audio.play();
     playPauseButton.classList.remove("bi-play");
@@ -152,21 +154,20 @@ function toggleInfoCard() {
     infoCard.style.display === "block" ? "none" : "block";
 }
 
-async function update_player(counter) {
-  if (counter >= 0 && counter < data.length) {
-    
-      let choice = data[counter];
+function update_player(counter) {
+  if (counter >= 0 && counter < content.length) {
       
-      console.log(data);
+      let choice = content[counter];
+      
+      content.splice(counter, 1);
 
-      data.splice(counter, 1);
-
-      if (!(song in data)){
-        data.push(song);
+      if (!(song in content)){
+        content.push(song);
       }
-
-      await player(choice);
-      await Content_list(data);
+      song = choice
+      player(choice);
+      Content_list(content);
+      
   } else {
       console.error("Invalid counter value. Counter should be within the bounds of the data array.");
   }
@@ -178,7 +179,9 @@ function like(){
     'name' : song['name'],
     'artist' : song["artists"]["primary"][0]["name"],
     'img' : song["image"][2]["url"],
-    'link' :song["downloadUrl"][4]["url"]
+    'link' :song["downloadUrl"][4]["url"],
+    'duration' : song['duration']
+
   };
   console.log(Data);
   
@@ -217,4 +220,66 @@ function getCsrfToken() {
     }
   }
   return null;
+}
+
+function recent(){
+
+  var Data = song
+  console.log(Data);
+  // Send the song ID to the Django backend
+  fetch('/recent', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+      },
+      body: JSON.stringify({ 'data' : Data })
+  })
+  .then(response => {
+      if (response.ok) {
+        console.log("success")
+      } else {
+          console.error('Failed to add the song to recent');
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
+}
+
+function openpopup(){
+  let popup = document.getElementById("Popup");
+  console.log("Playlist");
+  popup.style.display = "grid";
+}
+
+
+function closepopup(){
+  let popup = document.getElementById("Popup");
+  popup.style.display = "none";
+}
+
+function addtoPlaylist(index , item) {
+  
+  Data = song;
+  console.log(Data);
+  // Send the song ID to the Django backend
+  fetch(`/addtoPlaylist/${Number(index)}`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+      },
+      body: JSON.stringify({ 'data' : Data })
+  })
+  .then(response => {
+      if (response.ok) {
+        console.log("Added to playlist");
+      } else {
+          console.error('Failed to add the song to recent');
+      }
+  })
+  .catch(error => {
+      console.error('Error:', error);
+  });
 }

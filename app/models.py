@@ -34,6 +34,7 @@ class LikedSongs(models.Model):
 class Playlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
     name = models.CharField(max_length=200)
+    img = models.URLField()
     
     def __str__(self):
         return f'{self.name}'
@@ -63,3 +64,4 @@ class Recent_played(models.Model):
     
     def __str__(self):
         return f'{self.name}'
+    

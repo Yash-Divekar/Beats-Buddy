@@ -20,7 +20,7 @@ def register(request):
             user_data = user_data_form.save(commit=False)  # Get the unsaved instance of UserData
             user_data.user = user  # Assign the current user to the user field
             user_data.save() 
-            return redirect('index')  # Redirect to a success page
+            return redirect('register.html')  # Redirect to a success page
     else:
         user_form = User_Form()
         user_data_form = User_Data_Form()
@@ -33,8 +33,8 @@ def login_user(request):
             login(request , user)
             return redirect('index')
         else:
-            return render(request , 'login.html' , status=400)
-    return render(request , "login.html")
+            return render(request , 'login2.html' , status=400)
+    return render(request , "login2.html")
 
 @login_required(redirect_field_name='login_user')
 def log_out(request):
@@ -74,7 +74,8 @@ def like(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         data = data.get('data')
-        x = LikedSongs(user= request.user , song_id =data.get('song_id') , name = data.get('name') , artist = data.get('artist') , img = data.get('img') ,link = data.get('link') , duration=data.get('duration'))
+        x = LikedSongs(user= request.user , song_id =data.get('song_id') , name = data.get('name') ,
+                       artist = data.get('artist'),img = data.get('img'),link = data.get('link'),duration=data.get('duration'))
         x.save()
         print("success")
         return JsonResponse({'message': 'Data received successfully'})
@@ -95,7 +96,8 @@ def recent(request):
             print("update")
             return JsonResponse({'message': 'Data time updated successfully'})
         else:
-            x = Recent_played(user=request.user, song_id=song_id, name=data.get('name'), artist=data.get('artist'), img=data.get('img'), link=data.get('link') , duration=data.get('duration'))
+            x = Recent_played(user=request.user, song_id=song_id, name=data.get('name'),
+                artist=data.get('artist'),img=data.get('img'),link=data.get('link'),duration=data.get('duration'))
             x.save()
             print("added")
             return JsonResponse({'message': 'New data added successfully'})
@@ -107,7 +109,9 @@ def addtoPlylist(request , index):
     if request.method == 'POST':
         data = json.loads(request.body)
         data = data.get('data')
-        x = PlaylistSongs(playlist=Playlist.objects.filter(user = request.user)[index] , song_id = data.get('song_id') , name = data.get('name') , artist = data.get('artist') , img = data.get('img') ,link = data.get('link') , duration=data.get('duration'))
+        x = PlaylistSongs(playlist=Playlist.objects.filter(user = request.user)[index]
+            ,song_id = data.get('song_id') , name = data.get('name') , artist = data.get('artist'),
+            img = data.get('img') ,link = data.get('link') , duration=data.get('duration'))
         x.save()
         print("success")
         return JsonResponse({'message': 'Data received successfully'})

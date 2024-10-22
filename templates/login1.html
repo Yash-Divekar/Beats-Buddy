@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+<!-- -- <div action="connect2.php" method="POST"></div> -->
+    <link rel="stylesheet" href="login.css">
+   </head>
+<body>
+  <div class="container">
+    <div class="title">Login</div>
+    <div class="content">
+        <form method="post" action="post">
+          {% csrf_token %}
+        <div class="user-details">
+            
+          <div class="input-box">
+            <span class="details">Username</span>
+            <input type="text" placeholder="Enter your username" name="Username" required>
+          </div>
+        <br></br>
+          <div class="input-box">
+            <span class="details">Password</span>
+            <input type="password" placeholder="Enter your password" name="Password" required>
+          </div>
+        </div>
+        <div class="button">
+          <input type="submit" value="Login" name="submit">
+        </div>
+        <div class="register link">New user?<a href="register.html" > Register here</a> </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

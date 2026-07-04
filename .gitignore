@@ -1,0 +1,51 @@
+# System / IDE
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+.vercel/
+
+# Python
+__pycache__/
+.venv/
+venv/
+env/
+myenv/
+*.pyc
+
+# Java
+out/
+target/
+*.class
+
+# .NET
+bin/
+obj/
+
+# UiPath / RPA
+.objects/
+.project/
+.screenshots/
+.tmh/
+
+# Large Datasets & Archives
+data/
+Data/
+dataset/
+datasets/
+temp/
+tmp/
+*.zip
+*.rar
+*.tar.gz
+*.h5
+*.model
